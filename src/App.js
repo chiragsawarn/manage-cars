@@ -1,25 +1,25 @@
-import logo from './logo.svg';
-import './App.css';
+import CarsForm from './components/CarsForm';
+import CarsSearch from './components/CarsSearch';
+import CarsList from './components/CarsList';
+import CarsValue from './components/CarsValue';
+import { useSelector } from 'react-redux';
+import { useState } from 'react';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+const App = ()=>{
+    const [searchTerm, setSearchTerm] = useState('');
+    const carsList = useSelector((state)=> state.cars);
+    const filteredCarsList = carsList.filter((car)=>{
+        return car.name.toLowerCase().includes(searchTerm.toLowerCase());
+    })
+    
+    return (
+        <div>
+            <CarsForm handleChange={setSearchTerm} />
+            <CarsSearch value={searchTerm} handleChange={setSearchTerm} />
+            <CarsList carsList={filteredCarsList} />
+            <CarsValue carsList={filteredCarsList} />
+        </div>
+    );
 }
 
 export default App;
